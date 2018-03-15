@@ -6,8 +6,8 @@
     "Microsoft.Activities": "1.0.1.0",
     "Microsoft.Activities.Extensions": "2.0.6.9",
     "mihhdu.Docker.Activities": "1.1.0.0",
-    "mihhdu.ListOfDictToDT.Activities": "1.0.1.0",
-    "mihhdu.Workflow.Activities": "1.1.0.0",
+    "mihhdu.Math.Activities": "1.0.0.0",
+    "mihhdu.TensorFlow.Activities": "1.2.0.0",
     "UiPath.Cognitive.Activities": "1.0.6479.13212",
     "UiPath.Core.Activities": "18.1.6603.13899",
     "UiPath.Credentials.Activities": "1.1.6479.13204",
@@ -28,7 +28,7 @@
     "*password*"
   ],
   "toolVersion": "18.1.1.13",
-  "projectVersion": "1.0.6647.28203",
+  "projectVersion": "1.0.6647.34817",
   "packOptions": {},
   "runtimeOptions": {}
 }
