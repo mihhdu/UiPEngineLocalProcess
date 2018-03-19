@@ -3,15 +3,25 @@
 
 This workblock contains code that will do the following:
 1. Read a configuration file, by default located in Data\Config.xlsx and output as a dictionary named config
+
 2. Calls ProcessLayer\InitAllApplications.xaml, where you should initialize apps
+
 3. Read the collection of data
+
 4. For each piece of data (if you have only one transaction pull 4.1 out of 4)
+
 --4.1 Execute Process - retry if you run into a AppEx
-----4.1.1 Calls ProcessLayer\ProcessTransaction.xaml, where you should input data into your opened    apps
+
+----4.1.1 Calls ProcessLayer\ProcessTransaction.xaml, where you should input data into your opened applications
+
 ----4.1.2 Evaluate Process wb output
+
 ----4.1.3 Recover if wb failed with AppEx
+
 ------4.1.3.1 Call ProcessLayer\CloseAllApplications.xaml
+
 ------4.1.3.2 Call ProcessLayer\InitAllApplications.xaml
+
 5. Call ProcessLayer\CloseAllApplications.xaml
 
 ### For New Project ###
