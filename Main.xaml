@@ -326,7 +326,6 @@
           <Sequence sap2010:Annotation.AnnotationText="This function accepts a list of dictionary objects for each completed workblock, containing execution and hierarchy data. Upon workblock completion, it logs it's own dictionary content, then adds it to the list of all completed workblocks, the io_Audit collection." DisplayName="wb Logging Successful" sap2010:WorkflowViewState.IdRef="Sequence_2">
             <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke wbLogging workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Framework\wbLogging.xaml">
               <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="x:String" x:Key="in_wbType">[wbUiPEngineLocal_Type]</InArgument>
                 <InArgument x:TypeArguments="s:DateTime" x:Key="in_wbStart">[wbUiPEngineLocal_StartTime]</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="in_wbPath">[wbUiPEngineLocal_Path]</InArgument>
                 <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="in_ChildAudit">[wbUiPEngineLocal_Audit]</InArgument>
@@ -405,7 +404,6 @@
               <Sequence sap2010:Annotation.AnnotationText="This function accepts a list of dictionary objects for each completed workblock, containing execution and hierarchy data. Upon workblock completion, it logs it's own dictionary content, then adds it to the list of all completed workblocks, the io_Audit collection." DisplayName="wb Logging Failed" sap2010:WorkflowViewState.IdRef="Sequence_6">
                 <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke wbLogging workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Framework\wbLogging.xaml">
                   <ui:InvokeWorkflowFile.Arguments>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_wbType">[wbUiPEngineLocal_Type]</InArgument>
                     <InArgument x:TypeArguments="s:DateTime" x:Key="in_wbStart">[wbUiPEngineLocal_StartTime]</InArgument>
                     <InArgument x:TypeArguments="x:String" x:Key="in_wbPath">[wbUiPEngineLocal_Path]</InArgument>
                     <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="in_ChildAudit">[wbUiPEngineLocal_Audit]</InArgument>
@@ -469,7 +467,7 @@
         </Catch>
       </TryCatch.Catches>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -780,23 +778,23 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="200,51">
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="486,1099">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="404,21">
+      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="492,1168">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="418,2747">
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="506,1567">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -805,7 +803,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="440,2913">
+      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="528,1733">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -813,7 +811,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="basicFramework_1" sap:VirtualizedContainerService.HintSize="480,3033" />
+      <sap2010:ViewStateData Id="basicFramework_1" sap:VirtualizedContainerService.HintSize="568,1813" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
