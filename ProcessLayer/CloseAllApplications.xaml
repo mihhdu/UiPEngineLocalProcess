@@ -75,11 +75,11 @@
   <TryCatch sap2010:Annotation.AnnotationText="##Business Process Layer##&#xA;Description: Here all working applications will be soft closed&#xA;&#xA;Pre Condition: N/A&#xA;Post Condtion: Applications closed" DisplayName="Try CloseAllApplications" sap2010:WorkflowViewState.IdRef="TryCatch_5">
     <TryCatch.Try>
       <Sequence sap2010:Annotation.AnnotationText="Process layer." DisplayName="Process" sap2010:WorkflowViewState.IdRef="Sequence_33">
-        <ui:CloseApplication DisplayName="Close application 'UIDemo.exe  UIDemo'" sap2010:WorkflowViewState.IdRef="CloseApplication_1">
-          <ui:CloseApplication.Target>
-            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="c9395599a36d15128cf233856e0e0801" Selector="&lt;wnd app='uidemo.exe' cls='HwndWrapper*' title='UIDemo' /&gt;" TimeoutMS="5000" WaitForReady="INTERACTIVE" />
-          </ui:CloseApplication.Target>
-        </ui:CloseApplication>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UiDemo_Close workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="UiDemo\UiDemo_Close.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <scg:Dictionary x:TypeArguments="x:String, Argument" />
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
       </Sequence>
     </TryCatch.Try>
     <TryCatch.Catches>
@@ -88,19 +88,23 @@
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="If we cannot cleanly close, kill">
-            <ui:KillProcess ContinueOnError="{x:Null}" Process="{x:Null}" DisplayName="Kill process" ProcessName="UiDemo" sap2010:WorkflowViewState.IdRef="KillProcess_1" />
-            <sap2010:WorkflowViewState.IdRef>Sequence_34</sap2010:WorkflowViewState.IdRef>
+          <Sequence DisplayName="If we cannot cleanly close, kill" sap2010:WorkflowViewState.IdRef="Sequence_34">
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UiDemo_Kill workflow" UnSafe="False" WorkflowFileName="UiDemo\UiDemo_Kill.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <scg:Dictionary x:TypeArguments="x:String, Argument" />
+              </ui:InvokeWorkflowFile.Arguments>
+              <sap2010:WorkflowViewState.IdRef>InvokeWorkflowFile_2</sap2010:WorkflowViewState.IdRef>
+            </ui:InvokeWorkflowFile>
           </Sequence>
         </ActivityAction>
       </Catch>
     </TryCatch.Catches>
-    <sads:DebugSymbol.Symbol>d3hDOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcR29vZ2xlIERyaXZlXFdvcmtzcGFjZVxVaVBhdGhcVGVtcGxhdGVzXFNpbXBsZVJlY292ZXJhYmxlTG9jYWxQcm9jZXNzXENsb3NlQWxsQXBwbGljYXRpb25zLnhhbWwJAXMBeAECSwNjDgIBAU0HUxICAQVbC14WAgECTglSHwIBBlwNXK0BAgEDUIcBUMkBAgEIUNQBUNoBAgEHXHJcegIBBA==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2NHOlxNeSBEcml2ZVxXb3Jrc3BhY2VcVWlQYXRoXFRlbXBsYXRlc1xVaVBFbmdpbmVMb2NhbFByb2Nlc3NcUHJvY2Vzc0xheWVyXENsb3NlQWxsQXBwbGljYXRpb25zLnhhbWwIAXMBeAECSwNnDgIBAU0HUxICAQVbC2IWAgECTglSIQIBBlwNYSUCAQNOvQFO1wECAQdciQFcogECAQQ=</sads:DebugSymbol.Symbol>
   </TryCatch>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="CloseApplication_1" sap:VirtualizedContainerService.HintSize="314,106" />
-      <sap2010:ViewStateData Id="Sequence_33" sap:VirtualizedContainerService.HintSize="336,257">
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_1" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_33" sap:VirtualizedContainerService.HintSize="336,238">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -108,15 +112,15 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="KillProcess_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="Sequence_34" sap:VirtualizedContainerService.HintSize="222,146">
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_34" sap:VirtualizedContainerService.HintSize="336,211">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Catch`1_6" sap:VirtualizedContainerService.HintSize="400,215">
+      <sap2010:ViewStateData Id="Catch`1_6" sap:VirtualizedContainerService.HintSize="400,280">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -124,14 +128,14 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_5" sap:VirtualizedContainerService.HintSize="414,464">
+      <sap2010:ViewStateData Id="TryCatch_5" sap:VirtualizedContainerService.HintSize="414,529">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="CloseAllApplications_1" sap:VirtualizedContainerService.HintSize="454,544" />
+      <sap2010:ViewStateData Id="CloseAllApplications_1" sap:VirtualizedContainerService.HintSize="454,609" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

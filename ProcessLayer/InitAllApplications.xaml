@@ -8,6 +8,7 @@
  xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
  xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
  xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ss="clr-namespace:System.Security;assembly=mscorlib"
  xmlns:this="clr-namespace:"
  xmlns:ui="http://schemas.uipath.com/workflow/activities"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
@@ -73,74 +74,38 @@
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="##Business Process Layer##&#xA;Description: Open and initialize application as needed.&#xA;&#xA;Pre Condition: N/A&#xA;Post Condtion: Applications opened" DisplayName="InitAllApplications" sap2010:WorkflowViewState.IdRef="Sequence_9">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="username" />
+      <Variable x:TypeArguments="ss:SecureString" Name="password" />
+    </Sequence.Variables>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAppCredentials workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Framework\GetAppCredentials.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_Username" />
+        <InArgument x:TypeArguments="x:String" x:Key="in_Credential">UiDemoCredential</InArgument>
+        <OutArgument x:TypeArguments="ss:SecureString" x:Key="out_Password">[password]</OutArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
     <Parallel sap2010:WorkflowViewState.IdRef="Parallel_1">
-      <ui:OpenApplication ApplicationWindow="{x:Null}" Arguments="{x:Null}" TimeoutMS="{x:Null}" WorkingDirectory="{x:Null}" DisplayName="Open application 'UIDemo.exe  UIDemo'" FileName="[in_Config(&quot;UiDemoPath&quot;).ToString]" sap2010:WorkflowViewState.IdRef="OpenApplication_1" InformativeScreenshot="40304b13142613db40b445d637c4a064" Selector="&lt;wnd app='uidemo.exe' cls='HwndWrapper*' title='UIDemo' /&gt;">
-        <ui:OpenApplication.Body>
-          <ActivityAction x:TypeArguments="x:Object">
-            <ActivityAction.Argument>
-              <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
-            </ActivityAction.Argument>
-            <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_10" />
-          </ActivityAction>
-        </ui:OpenApplication.Body>
-      </ui:OpenApplication>
-      <Sequence DisplayName="Log In" sap2010:WorkflowViewState.IdRef="Sequence_11">
-        <Sequence.Variables>
-          <Variable x:TypeArguments="scg:List(scg:KeyValuePair(x:String, scg:KeyValuePair(x:String, scg:Dictionary(x:String, x:Object))))" Name="listOfStates" />
-          <Variable x:TypeArguments="x:Boolean" Name="success" />
-          <Variable x:TypeArguments="x:Int32" Name="failedStateIndex" />
-          <Variable x:TypeArguments="scg:KeyValuePair(x:String, scg:KeyValuePair(x:String, scg:Dictionary(x:String, x:Object)))" Name="failedState" />
-        </Sequence.Variables>
-        <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type into" EmptyField="False" sap2010:WorkflowViewState.IdRef="TypeInto_1" SendWindowMessages="False" SimulateType="False" Text="admin">
-          <ui:TypeInto.Target>
-            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='uidemo.exe' cls='HwndWrapper*' title='UiDemo' /&gt;&lt;ctrl automationid='user' /&gt;" WaitForReady="INTERACTIVE" />
-          </ui:TypeInto.Target>
-        </ui:TypeInto>
-        <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type into" EmptyField="False" sap2010:WorkflowViewState.IdRef="TypeInto_2" SendWindowMessages="False" SimulateType="False" Text="password">
-          <ui:TypeInto.Target>
-            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='uidemo.exe' cls='HwndWrapper*' title='UiDemo' /&gt;&lt;ctrl automationid='pass' /&gt;" WaitForReady="INTERACTIVE" />
-          </ui:TypeInto.Target>
-        </ui:TypeInto>
-        <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="False">
-          <ui:Click.CursorPosition>
-            <ui:CursorPosition Position="Center">
-              <ui:CursorPosition.OffsetX>
-                <InArgument x:TypeArguments="x:Int32" />
-              </ui:CursorPosition.OffsetX>
-              <ui:CursorPosition.OffsetY>
-                <InArgument x:TypeArguments="x:Int32" />
-              </ui:CursorPosition.OffsetY>
-            </ui:CursorPosition>
-          </ui:Click.CursorPosition>
-          <ui:Click.Target>
-            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='uidemo.exe' cls='HwndWrapper*' title='UiDemo' /&gt;&lt;ctrl name='Log In' role='push button' /&gt;" WaitForReady="INTERACTIVE" />
-          </ui:Click.Target>
-        </ui:Click>
-      </Sequence>
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UiDemo_OpenApp workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="UiDemo\UiDemo_OpenApp.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Path">G:\My Drive\Resources\UiDemo Login\UiDemo.exe</InArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UiDemo_Login workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="UiDemo\UiDemo_Login.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Username">[username]</InArgument>
+          <InArgument x:TypeArguments="ss:SecureString" x:Key="in_Password">[password]</InArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
     </Parallel>
-    <sads:DebugSymbol.Symbol>d3dDOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcR29vZ2xlIERyaXZlXFdvcmtzcGFjZVxVaVBhdGhcVGVtcGxhdGVzXFNpbXBsZVJlY292ZXJhYmxlTG9jYWxQcm9jZXNzXEluaXRBbGxBcHBsaWNhdGlvbnMueGFtbBABcQF2AQJLA3oOAgEBTAV4EAIBAk0HVhwCAQxXB3cSAgEDTeACTaIDAgEQTbsBTekBAgEOUw1TWAIBDV4JYhcCAQljCWcXAgEGaAl2FAIBBGBjYMcBAgELXpMCXpoCAgEKZWNlxwECAQhjkwJjnQICAQd0Y3TUAQIBBQ==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2JHOlxNeSBEcml2ZVxXb3Jrc3BhY2VcVWlQYXRoXFRlbXBsYXRlc1xVaVBFbmdpbmVMb2NhbFByb2Nlc3NcUHJvY2Vzc0xheWVyXEluaXRBbGxBcHBsaWNhdGlvbnMueGFtbA4BcQF2AQJMA2YOAgEBUQVXHQIBDFgFZBACAQJVTVVXAgEPVEZUVgIBDlG+AVHgAQIBDVkHXR8CAQleB2MfAgEDW0JbbwIBC1m9AVnZAQIBCmBGYFACAQdeuwFe1QECAQZhTWFXAgEE</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="200,99">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="OpenApplication_1" sap:VirtualizedContainerService.HintSize="414,464" />
-      <sap2010:ViewStateData Id="TypeInto_1" sap:VirtualizedContainerService.HintSize="314,96" />
-      <sap2010:ViewStateData Id="TypeInto_2" sap:VirtualizedContainerService.HintSize="314,96" />
-      <sap2010:ViewStateData Id="Click_1" sap:VirtualizedContainerService.HintSize="314,68" />
-      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="336,464">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Parallel_1" sap:VirtualizedContainerService.HintSize="904,510">
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_3" sap:VirtualizedContainerService.HintSize="782,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_1" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Parallel_1" sap:VirtualizedContainerService.HintSize="782,133">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -148,7 +113,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="926,721">
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="804,471">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -156,7 +121,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="InitAllApplications_1" sap:VirtualizedContainerService.HintSize="966,801" />
+      <sap2010:ViewStateData Id="InitAllApplications_1" sap:VirtualizedContainerService.HintSize="844,631" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

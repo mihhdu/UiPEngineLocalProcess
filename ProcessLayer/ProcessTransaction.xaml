@@ -135,59 +135,13 @@
               <Throw DisplayName="Simulate System Exception" Exception="[new system.Exception(&quot;Simulated exception, in place of a real one!&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_2" />
             </If.Then>
           </If>
-          <Sequence DisplayName="Populate all the fields" sap2010:WorkflowViewState.IdRef="Sequence_63">
-            <Sequence.Variables>
-              <Variable x:TypeArguments="scg:List(scg:KeyValuePair(x:String, scg:KeyValuePair(x:String, scg:Dictionary(x:String, x:Object))))" Name="listOfStates" />
-              <Variable x:TypeArguments="x:Boolean" Name="success" />
-              <Variable x:TypeArguments="x:Int32" Name="failedStateIndex" />
-              <Variable x:TypeArguments="scg:KeyValuePair(x:String, scg:KeyValuePair(x:String, scg:Dictionary(x:String, x:Object)))" Name="failedState" />
-            </Sequence.Variables>
-            <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="False">
-              <ui:Click.CursorPosition>
-                <ui:CursorPosition Position="Center">
-                  <ui:CursorPosition.OffsetX>
-                    <InArgument x:TypeArguments="x:Int32" />
-                  </ui:CursorPosition.OffsetX>
-                  <ui:CursorPosition.OffsetY>
-                    <InArgument x:TypeArguments="x:Int32" />
-                  </ui:CursorPosition.OffsetY>
-                </ui:CursorPosition>
-              </ui:Click.CursorPosition>
-              <ui:Click.Target>
-                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='uidemo.exe' cls='HwndWrapper*' title='UIDemo' /&gt;&lt;ctrl name='Deposit' role='radio button' /&gt;&lt;ctrl name='Deposit' role='text' /&gt;" WaitForReady="INTERACTIVE" />
-              </ui:Click.Target>
-            </ui:Click>
-            <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type into" EmptyField="False" sap2010:WorkflowViewState.IdRef="TypeInto_1" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.Item(&quot;Cash IN&quot;).ToString]">
-              <ui:TypeInto.Target>
-                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='uidemo.exe' cls='HwndWrapper*' title='UIDemo' /&gt;&lt;ctrl automationid='cashintb' /&gt;" WaitForReady="INTERACTIVE" />
-              </ui:TypeInto.Target>
-            </ui:TypeInto>
-            <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type into" EmptyField="False" sap2010:WorkflowViewState.IdRef="TypeInto_2" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.Item(&quot;On US Check&quot;).ToString]">
-              <ui:TypeInto.Target>
-                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='uidemo.exe' cls='HwndWrapper*' title='UIDemo' /&gt;&lt;ctrl automationid='onustb' /&gt;" WaitForReady="INTERACTIVE" />
-              </ui:TypeInto.Target>
-            </ui:TypeInto>
-            <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type into" EmptyField="False" sap2010:WorkflowViewState.IdRef="TypeInto_3" SendWindowMessages="False" SimulateType="False" Text="[in_TransactionItem.Item(&quot;Not on US Check&quot;).ToString]">
-              <ui:TypeInto.Target>
-                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='uidemo.exe' cls='HwndWrapper*' title='UIDemo' /&gt;&lt;ctrl automationid='notonustb' /&gt;" WaitForReady="INTERACTIVE" />
-              </ui:TypeInto.Target>
-            </ui:TypeInto>
-            <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" sap2010:WorkflowViewState.IdRef="Click_2" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="False">
-              <ui:Click.CursorPosition>
-                <ui:CursorPosition Position="Center">
-                  <ui:CursorPosition.OffsetX>
-                    <InArgument x:TypeArguments="x:Int32" />
-                  </ui:CursorPosition.OffsetX>
-                  <ui:CursorPosition.OffsetY>
-                    <InArgument x:TypeArguments="x:Int32" />
-                  </ui:CursorPosition.OffsetY>
-                </ui:CursorPosition>
-              </ui:Click.CursorPosition>
-              <ui:Click.Target>
-                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" Selector="&lt;wnd app='uidemo.exe' cls='HwndWrapper*' title='UIDemo' /&gt;&lt;ctrl name='Accept' role='push button' /&gt;" WaitForReady="INTERACTIVE" />
-              </ui:Click.Target>
-            </ui:Click>
-          </Sequence>
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UiDemo_DepositOperation workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="UiDemo\UiDemo_DepositOperation.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="in_CashIn">[in_TransactionItem.Item("Cash IN").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_OnUsCheck">[in_TransactionItem.Item("On US Check").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_NotOnUsCheck">[in_TransactionItem.Item("Not on US Check").ToString]</InArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
         </Sequence>
         <Sequence sap2010:Annotation.AnnotationText="Logging for work block. The sequence adds logging fields and counts the number of successful and failed child processes by adding wbName_Audit of the child processes to the dictionary named wbName_Audit &lt;string, object&gt; of the parent process" DisplayName="wb Logging Successful" sap2010:WorkflowViewState.IdRef="Sequence_46">
           <ui:AddLogFields sap2010:Annotation.AnnotationText="Audit Log Fields&#xA;wbTransactionID&#xA;wbTransactionField1&#xA;wbTransactionField2" DisplayName="wb Audit Log Fields" sap2010:WorkflowViewState.IdRef="AddLogFields_26">
@@ -273,7 +227,7 @@
         </ActivityAction>
       </Catch>
     </TryCatch.Catches>
-    <sads:DebugSymbol.Symbol>d2FHOlxNeSBEcml2ZVxXb3Jrc3BhY2VcVWlQYXRoXFRlbXBsYXRlc1xVaVBFbmdpbmVMb2NhbFByb2Nlc3NcUHJvY2Vzc0xheWVyXFByb2Nlc3NUcmFuc2FjdGlvbi54YW1sWQFvAXQBAlEDlQIOAgEBUzZTRgIBMVQ0VFMCATBVNFVkAgEtWQfhARICATLpAQuQAhYCAQJaCXsUAgFofAm/ARQCAVDAAQngARQCATPqAQ35ARgCASL6AQ2KAhgCAQiLAg2PAhICAQNbC2IUAgF3YwtqFAIBc2sLchQCAW1zC3oUAgFpfjp+TwIBUYABC4QBEAIBZIUBC4kBEAIBYIoBC74BFgIBUsEBC8cBHQIBTMgBC9YBIwIBONcBC98BIAIBNOsBD/gBGgIBI/sBD4kCJwIBCYsC5AGLAtkCAgEEjQIRjQJJAgEHYDZgUwIBel03XUcCAXhoOGhGAgF2ZTllTgIBdHA2cFoCAXBtN21HAgFueFp4oQECAWx1W3VsAgFqgAEZgAG9AQIBZYIBD4IB+wECAWaFARmFAX4CAWGHAQ+HAccBAgFikQENnwEYAgFeoAENpAEbAgFbpQENqQEbAgFYqgENrgEbAgFVrwENvQEYAgFTxQFSxQFgAgFPxAFSxAFgAgFOwwFOwwGPAQIBTcoBSMoBWAIBSswBSMwBWAIBSM0BcM0BgQECAUbSAVLSAVcCAUXLAUvLAWACAUPOAVHOAWMCAUHRAUzRAYQBAgE/zwFOzwFSAgE+yAG8AcgB1gECAT3TAXTTAX4CATvQAU/QAWECATnaATjaAUcCATfbATjbAUsCATbcATjcAUsCATXvARH2ARoCASf3ARH3AYMBAgEk/QFM/QFcAgEg/wFM/wFcAgEegAJ0gAKFAQIBHIUCVoUCWwIBG/4BT/4BZAIBGYcCVYcCYAIBF4ECVYECZwIBFYQCUIQCxAECARGCAlKCAmICAQ/7AcAB+wHaAQIBDoYCeIYCggECAQyDAlODAmUCAQqCAUeCAc4BAgFnhwFIhwGaAQIBY50BZ50BgwICAV+iAWeiAc8BAgFdoAGXAqAB0AICAVynAWenAc0BAgFapQGXAqUB1AICAVmsAWesAdABAgFXqgGXAqoB2AICAVa7AWe7AdgBAgFU9AE99AGhAQIBKvEBPvEBVwIBKPcBH/cBOgIBJQ==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2FHOlxNeSBEcml2ZVxXb3Jrc3BhY2VcVWlQYXRoXFRlbXBsYXRlc1xVaVBFbmdpbmVMb2NhbFByb2Nlc3NcUHJvY2Vzc0xheWVyXFByb2Nlc3NUcmFuc2FjdGlvbi54YW1sUAFvAXQBAlED5wEOAgEBUzZTRgIBMVQ0VFMCATBVNFVkAgEtWQezARICATK7AQviARYCAQJaCXsUAgFffAmRARQCAVCSAQmyARQCATO8AQ3LARgCASLMAQ3cARgCAQjdAQ3hARICAQNbC2IUAgFuYwtqFAIBamsLchQCAWRzC3oUAgFgfjp+TwIBUYABC4QBEAIBW4UBC4kBEAIBV4oBC5ABIwIBUpMBC5kBHQIBTJoBC6gBIwIBOKkBC7EBIAIBNL0BD8oBGgIBI80BD9sBJwIBCd0B5AHdAdkCAgEE3wER3wFJAgEHYDZgUwIBcV03XUcCAW9oOGhGAgFtZTllTgIBa3A2cFoCAWdtN21HAgFleFp4oQECAWN1W3VsAgFhgAEZgAG9AQIBXIIBD4IB+wECAV2FARmFAX4CAViHAQ+HAccBAgFZjQFLjQF8AgFWjgFOjgGDAQIBVYwBSIwBdQIBVIoBygGKAe8BAgFTlwFSlwFgAgFPlgFSlgFgAgFOlQFOlQGPAQIBTZwBSJwBWAIBSp4BSJ4BWAIBSJ8BcJ8BgQECAUakAVKkAVcCAUWdAUudAWACAUOgAVGgAWMCAUGjAUyjAYQBAgE/oQFOoQFSAgE+mgG8AZoB1gECAT2lAXSlAX4CATuiAU+iAWECATmsATisAUcCATetATitAUsCATauATiuAUsCATXBARHIARoCASfJARHJAYMBAgEkzwFMzwFcAgEg0QFM0QFcAgEe0gF00gGFAQIBHNcBVtcBWwIBG9ABT9ABZAIBGdkBVdkBYAIBF9MBVdMBZwIBFdYBUNYBxAECARHUAVLUAWICAQ/NAcABzQHaAQIBDtgBeNgBggECAQzVAVPVAWUCAQqCAUeCAc4BAgFehwFIhwGaAQIBWsYBPcYBoQECASrDAT7DAVcCASjJAR/JAToCASU=</sads:DebugSymbol.Symbol>
   </TryCatch>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -332,20 +286,8 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Click_1" sap:VirtualizedContainerService.HintSize="314,68" />
-      <sap2010:ViewStateData Id="TypeInto_1" sap:VirtualizedContainerService.HintSize="314,96" />
-      <sap2010:ViewStateData Id="TypeInto_2" sap:VirtualizedContainerService.HintSize="314,96" />
-      <sap2010:ViewStateData Id="TypeInto_3" sap:VirtualizedContainerService.HintSize="314,96" />
-      <sap2010:ViewStateData Id="Click_2" sap:VirtualizedContainerService.HintSize="314,68" />
-      <sap2010:ViewStateData Id="Sequence_63" sap:VirtualizedContainerService.HintSize="464,708">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_64" sap:VirtualizedContainerService.HintSize="486,1355">
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_6" sap:VirtualizedContainerService.HintSize="464,87" />
+      <sap2010:ViewStateData Id="Sequence_64" sap:VirtualizedContainerService.HintSize="486,734">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -378,7 +320,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_47" sap:VirtualizedContainerService.HintSize="508,2278">
+      <sap2010:ViewStateData Id="Sequence_47" sap:VirtualizedContainerService.HintSize="508,1657">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -396,7 +338,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_66" sap:VirtualizedContainerService.HintSize="464,262">
+      <sap2010:ViewStateData Id="Sequence_66" sap:VirtualizedContainerService.HintSize="508,262">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -406,7 +348,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="InvokeWorkflowFile_5" sap:VirtualizedContainerService.HintSize="314,87" />
-      <sap2010:ViewStateData Id="Sequence_49" sap:VirtualizedContainerService.HintSize="464,298">
+      <sap2010:ViewStateData Id="Sequence_49" sap:VirtualizedContainerService.HintSize="508,298">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -423,29 +365,29 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_50" sap:VirtualizedContainerService.HintSize="486,1014">
+      <sap2010:ViewStateData Id="Sequence_50" sap:VirtualizedContainerService.HintSize="530,840">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Catch`1_7" sap:VirtualizedContainerService.HintSize="492,1083">
+      <sap2010:ViewStateData Id="Catch`1_7" sap:VirtualizedContainerService.HintSize="512,21">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_4" sap:VirtualizedContainerService.HintSize="506,1317">
+      <sap2010:ViewStateData Id="TryCatch_4" sap:VirtualizedContainerService.HintSize="526,1996">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ProcessTransaction_1" sap:VirtualizedContainerService.HintSize="546,1437" />
+      <sap2010:ViewStateData Id="ProcessTransaction_1" sap:VirtualizedContainerService.HintSize="566,2116" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
