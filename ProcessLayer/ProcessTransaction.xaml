@@ -81,17 +81,17 @@
   </TextExpression.ReferencesForImplementation>
   <TryCatch sap2010:Annotation.AnnotationText="##Business Process Layer##&#xA;Description: In this file all other process specific files will be invoked. If an application exception occurs, the current transaction can be retried. If a BRE is thrown, the transaction will be skipped. Can be a flowchart or sequence. " DisplayName="wbProcess" sap2010:WorkflowViewState.IdRef="TryCatch_4">
     <TryCatch.Variables>
-      <Variable x:TypeArguments="s:DateTime" Default="[datetime.Now]" Name="wbProcess_StartTime" />
-      <Variable x:TypeArguments="x:String" Default="Input row UiDemo, simulate Ex" Name="wbProcess_Type" />
-      <Variable x:TypeArguments="x:String" Default="[in_wbParentPath+&quot;|&quot;+wbProcess_Type]" Name="wbProcess_Path" />
-      <Variable x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" Name="wbProcess_Audit" />
+      <Variable x:TypeArguments="s:DateTime" Default="[datetime.Now]" Name="wbStartTime" />
+      <Variable x:TypeArguments="x:String" Default="Input row UiDemo, simulate Ex" Name="wbType" />
+      <Variable x:TypeArguments="x:String" Default="[in_wbParentPath+&quot;|&quot;+wbType]" Name="wbPath" />
+      <Variable x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" Name="wbAudit" />
     </TryCatch.Variables>
     <TryCatch.Try>
       <Sequence DisplayName="Try processing wbProcess" sap2010:WorkflowViewState.IdRef="Sequence_47">
         <Sequence sap2010:Annotation.AnnotationText="During block startup, information about the start time and path are constructed. They will be passed to any child workblock." DisplayName="wbStartup" sap2010:WorkflowViewState.IdRef="Sequence_67">
           <Assign sap2010:Annotation.AnnotationText="Edit to assign a name of your choosing" DisplayName="Assign workblock its name" sap2010:WorkflowViewState.IdRef="Assign_4">
             <Assign.To>
-              <OutArgument x:TypeArguments="x:String">[wbProcess_Type]</OutArgument>
+              <OutArgument x:TypeArguments="x:String">[wbType]</OutArgument>
             </Assign.To>
             <Assign.Value>
               <InArgument x:TypeArguments="x:String">Input row UiDemo, simulate Ex</InArgument>
@@ -99,7 +99,7 @@
           </Assign>
           <Assign sap2010:Annotation.AnnotationText="Assign template start time. This will be passed to children wb, if any" DisplayName="Assign start time" sap2010:WorkflowViewState.IdRef="Assign_5">
             <Assign.To>
-              <OutArgument x:TypeArguments="s:DateTime">[wbProcess_StartTime]</OutArgument>
+              <OutArgument x:TypeArguments="s:DateTime">[wbStartTime]</OutArgument>
             </Assign.To>
             <Assign.Value>
               <InArgument x:TypeArguments="s:DateTime">[datetime.Now]</InArgument>
@@ -107,15 +107,15 @@
           </Assign>
           <Assign sap2010:Annotation.AnnotationText="Create current workblock path. This will be passed to children wb, if any" DisplayName="Create workblock path" sap2010:WorkflowViewState.IdRef="Assign_6">
             <Assign.To>
-              <OutArgument x:TypeArguments="x:String">[wbProcess_Path]</OutArgument>
+              <OutArgument x:TypeArguments="x:String">[wbPath]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="x:String">[in_wbParentPath+"|"+wbProcess_Type]</InArgument>
+              <InArgument x:TypeArguments="x:String">[in_wbParentPath+"|"+wbType]</InArgument>
             </Assign.Value>
           </Assign>
           <Assign sap2010:Annotation.AnnotationText="Init Audit object. This will be passed to children wb, if any" DisplayName="Initialize Audit" sap2010:WorkflowViewState.IdRef="Assign_7">
             <Assign.To>
-              <OutArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))">[wbProcess_Audit]</OutArgument>
+              <OutArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))">[wbAudit]</OutArgument>
             </Assign.To>
             <Assign.Value>
               <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))">[New system.Collections.Generic.list(of Dictionary(Of String, Object))]</InArgument>
@@ -127,39 +127,39 @@
             <Variable x:TypeArguments="s:Random" Default="[new system.Random]" Name="rng" />
           </Flowchart.Variables>
           <Flowchart.StartNode>
-            <x:Reference>__ReferenceID4</x:Reference>
+            <FlowDecision x:Name="__ReferenceID0" Condition="[Convert.ToDouble(in_TransactionItem.Item(&quot;Cash IN&quot;).ToString) &lt; convert.ToDouble(in_Config.Item(&quot;BusinessRuleException_DepositMinValue&quot;))]" DisplayName="Cash IN Value is too low" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+              <FlowDecision.True>
+                <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_1">
+                  <Throw DisplayName="Throw Business Exception" Exception="[new Uipath.Core.BusinessRuleException(&quot;The value of Cash In was &quot; +in_TransactionItem.Item(&quot;Cash IN&quot;).ToString)]" sap2010:WorkflowViewState.IdRef="Throw_1" />
+                </FlowStep>
+              </FlowDecision.True>
+              <FlowDecision.False>
+                <FlowDecision x:Name="__ReferenceID2" Condition="[convert.ToDouble(in_Config(&quot;ApplicationException_Probability&quot;)) &gt; 100*rng.NextDouble]" DisplayName="Simulated Application Exception" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
+                  <FlowDecision.True>
+                    <FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_2">
+                      <Throw DisplayName="Throw Simulated Exception" Exception="[new system.Exception(&quot;Simulated exception, in place of a real one!&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_2" />
+                    </FlowStep>
+                  </FlowDecision.True>
+                  <FlowDecision.False>
+                    <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_3">
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UiDemo_DepositOperation workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="UiDemo\UiDemo_DepositOperation.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="in_CashIn">[in_TransactionItem.Item("Cash IN").ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="in_OnUsCheck">[in_TransactionItem.Item("On US Check").ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="in_NotOnUsCheck">[in_TransactionItem.Item("Not on US Check").ToString]</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                      </ui:InvokeWorkflowFile>
+                    </FlowStep>
+                  </FlowDecision.False>
+                </FlowDecision>
+              </FlowDecision.False>
+            </FlowDecision>
           </Flowchart.StartNode>
-          <FlowDecision x:Name="__ReferenceID4" Condition="[Convert.ToDouble(in_TransactionItem.Item(&quot;Cash IN&quot;).ToString) &lt; convert.ToDouble(in_Config.Item(&quot;BusinessRuleException_DepositMinValue&quot;))]" DisplayName="Cash IN Value is too low" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
-            <FlowDecision.True>
-              <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_1">
-                <Throw DisplayName="Throw Business Exception" Exception="[new Uipath.Core.BusinessRuleException(&quot;The value of Cash In was &quot; +in_TransactionItem.Item(&quot;Cash IN&quot;).ToString)]" sap2010:WorkflowViewState.IdRef="Throw_1" />
-              </FlowStep>
-            </FlowDecision.True>
-            <FlowDecision.False>
-              <FlowDecision x:Name="__ReferenceID1" Condition="[convert.ToDouble(in_Config(&quot;ApplicationException_Probability&quot;)) &gt; 100*rng.NextDouble]" DisplayName="Simulated Application Exception" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
-                <FlowDecision.True>
-                  <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_2">
-                    <Throw DisplayName="Throw Simulated Exception" Exception="[new system.Exception(&quot;Simulated exception, in place of a real one!&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_2" />
-                  </FlowStep>
-                </FlowDecision.True>
-                <FlowDecision.False>
-                  <FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_3">
-                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UiDemo_DepositOperation workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="UiDemo\UiDemo_DepositOperation.xaml">
-                      <ui:InvokeWorkflowFile.Arguments>
-                        <InArgument x:TypeArguments="x:String" x:Key="in_CashIn">[in_TransactionItem.Item("Cash IN").ToString]</InArgument>
-                        <InArgument x:TypeArguments="x:String" x:Key="in_OnUsCheck">[in_TransactionItem.Item("On US Check").ToString]</InArgument>
-                        <InArgument x:TypeArguments="x:String" x:Key="in_NotOnUsCheck">[in_TransactionItem.Item("Not on US Check").ToString]</InArgument>
-                      </ui:InvokeWorkflowFile.Arguments>
-                    </ui:InvokeWorkflowFile>
-                  </FlowStep>
-                </FlowDecision.False>
-              </FlowDecision>
-            </FlowDecision.False>
-          </FlowDecision>
           <x:Reference>__ReferenceID0</x:Reference>
           <x:Reference>__ReferenceID1</x:Reference>
           <x:Reference>__ReferenceID2</x:Reference>
           <x:Reference>__ReferenceID3</x:Reference>
+          <x:Reference>__ReferenceID4</x:Reference>
         </Flowchart>
         <Sequence sap2010:Annotation.AnnotationText="Logging for work block. The sequence adds logging fields and counts the number of successful and failed child processes by adding wbName_Audit of the child processes to the dictionary named wbName_Audit &lt;string, object&gt; of the parent process" DisplayName="wb Logging Successful" sap2010:WorkflowViewState.IdRef="Sequence_46">
           <ui:AddLogFields sap2010:Annotation.AnnotationText="Audit Log Fields&#xA;wbTransactionID&#xA;wbTransactionField1&#xA;wbTransactionField2" DisplayName="wb Audit Log Fields" sap2010:WorkflowViewState.IdRef="AddLogFields_26">
@@ -171,13 +171,13 @@
           </ui:AddLogFields>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke wbLogging workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Framework\wbLogging.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="s:DateTime" x:Key="in_wbStart">[wbProcess_StartTime]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_wbPath">[wbProcess_Path]</InArgument>
-              <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="in_ChildAudit">[wbProcess_Audit]</InArgument>
+              <InArgument x:TypeArguments="s:DateTime" x:Key="in_wbStart">[wbStartTime]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_wbPath">[wbPath]</InArgument>
+              <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="in_ChildAudit">[wbAudit]</InArgument>
               <InArgument x:TypeArguments="s:DateTime" x:Key="in_wbParentStart">[in_wbParentStart]</InArgument>
               <InArgument x:TypeArguments="x:Boolean" x:Key="in_wbFinalExec">True</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_wbHandleError">[in_wbHandleError]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_LogMessage">["Work Block "+ wbProcess_Type.toString + " successful"]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_LogMessage">["Work Block "+ wbType.toString + " successful"]</InArgument>
               <InArgument x:TypeArguments="x:Boolean" x:Key="in_SuppressLogging">False</InArgument>
               <InOutArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="io_ParentAudit">[io_Audit]</InOutArgument>
               <InOutArgument x:TypeArguments="s:Exception" x:Key="io_Exception" />
@@ -221,13 +221,13 @@
             <Sequence sap2010:Annotation.AnnotationText="Logging for work block. The sequence adds logging fields and counts the number of successful and failed child processes by adding wbName_Audit of the child processes to the dictionary named wbName_Audit &lt;string, object&gt; of the parent process" DisplayName="wb Logging Failed" sap2010:WorkflowViewState.IdRef="Sequence_49">
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke wbLogging workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Framework\wbLogging.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="s:DateTime" x:Key="in_wbStart">[wbProcess_StartTime]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_wbPath">[wbProcess_Path]</InArgument>
-                  <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="in_ChildAudit">[wbProcess_Audit]</InArgument>
+                  <InArgument x:TypeArguments="s:DateTime" x:Key="in_wbStart">[wbStartTime]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_wbPath">[wbPath]</InArgument>
+                  <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="in_ChildAudit">[wbAudit]</InArgument>
                   <InArgument x:TypeArguments="s:DateTime" x:Key="in_wbParentStart">[in_wbParentStart]</InArgument>
                   <InArgument x:TypeArguments="x:Boolean" x:Key="in_wbFinalExec">[in_wbFinalExec]</InArgument>
                   <InArgument x:TypeArguments="x:String" x:Key="in_wbHandleError">[in_wbHandleError]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_LogMessage">["Work Block "+ wbProcess_Type.toString +" failed with exception "+exception.Message+" at Source "+exception.Source]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_LogMessage">["Work Block "+ wbType.toString +" failed with exception "+exception.Message+" at Source "+exception.Source]</InArgument>
                   <InArgument x:TypeArguments="x:Boolean" x:Key="in_SuppressLogging">False</InArgument>
                   <InOutArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="io_ParentAudit">[io_Audit]</InOutArgument>
                   <InOutArgument x:TypeArguments="s:Exception" x:Key="io_Exception">[exception]</InOutArgument>
@@ -243,7 +243,7 @@
         </ActivityAction>
       </Catch>
     </TryCatch.Catches>
-    <sads:DebugSymbol.Symbol>d2FHOlxNeSBEcml2ZVxXb3Jrc3BhY2VcVWlQYXRoXFRlbXBsYXRlc1xVaVBFbmdpbmVMb2NhbFByb2Nlc3NcUHJvY2Vzc0xheWVyXFByb2Nlc3NUcmFuc2FjdGlvbi54YW1sTAFvAXQBAlID9wEOAgEBVDZURgIBL1U0VVMCAS5WNFZkAgErWgfEARICATDMAQvyARYCAQJbCXwUAgFZfQmjARUCAUykAQnDARQCATHNAQ3cARgCASDdAQ3sARgCAQjtAQ3xARICAQNcC2MUAgFoZAtrFAIBZGwLcxQCAV50C3sUAgFafzp/TwIBTYQBO4QB3wECAViLAT+LAaQBAgFXkwEVmQEtAgFSjgEVjgHNAQIBUIcBEYcB/QECAU6lAQurAR0CAUisAQu5ASMCATa6AQvCASACATLOAQ/bARoCASHeAQ/rAScCAQntAeQB7QHZAgIBBO8BEe8BSQIBB2E2YVMCAWteN15HAgFpaThpRgIBZ2Y5Zk4CAWVxNnFaAgFhbjduRwIBX3laeaEBAgFddlt2bAIBW5YBVZYBhgECAVaXAViXAY0BAgFVlQFSlQF/AgFUkwHUAZMB+QECAVOOAU6OAaABAgFRhwFJhwHQAQIBT6kBUqkBYAIBS6gBUqgBYAIBSqcBTqcBjwECAUmvAUivAVgCAUawAXCwAYEBAgFEtQFStQFXAgFDrgFLrgFgAgFBsQFRsQFjAgE/tAFMtAGEAQIBPbIBTrIBUgIBPKwBvAGsAdYBAgE7tgF0tgF+AgE5swFPswFhAgE3vQE4vQFHAgE1vgE4vgFLAgE0vwE4vwFLAgEz0gER2QEaAgEl2gER2gGDAQIBIuEBTOEBXAIBHuIBdOIBhQECARznAVbnAVsCARvgAU/gAWQCARnpAVXpAWACARfjAVXjAWcCARXmAVDmAcQBAgER5AFS5AFiAgEP3gHAAd4B2gECAQ7oAXjoAYIBAgEM5QFT5QFlAgEK1wE91wGhAQIBKNQBPtQBVwIBJtoBH9oBOgIBIw==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2FHOlxNeSBEcml2ZVxXb3Jrc3BhY2VcVWlQYXRoXFRlbXBsYXRlc1xVaVBFbmdpbmVMb2NhbFByb2Nlc3NcUHJvY2Vzc0xheWVyXFByb2Nlc3NUcmFuc2FjdGlvbi54YW1sTAFvAXQBAlID9wEOAgEBVDZURgIBL1U0VVMCAS5WNFZcAgErWgfEARICATDMAQvyARYCAQJbCXwUAgFZfQmjARUCAUykAQnDARQCATHNAQ3cARgCASDdAQ3sARgCAQjtAQ3xARICAQNcC2MUAgFoZAtrFAIBZGwLcxQCAV50C3sUAgFafzp/TwIBTYIBPYIB4QECAViJAUGJAaYBAgFXkQEXlwEvAgFSjAEXjAHPAQIBUIUBE4UB/wECAU6lAQurAR0CAUisAQu5ASMCATa6AQvCASACATLOAQ/bARoCASHeAQ/rAScCAQntAeQB7QHZAgIBBO8BEe8BSQIBB2E2YVMCAWteN14/AgFpaThpRgIBZ2Y5ZkYCAWVxNnFSAgFhbjduPwIBX3laeaEBAgFddlt2ZAIBW5QBV5QBiAECAVaVAVqVAY8BAgFVkwFUkwGBAQIBVJEB1gGRAfsBAgFTjAFQjAGiAQIBUYUBS4UB0gECAU+pAVKpAWACAUuoAVKoAWACAUqnAU6nAY8BAgFJrwFIrwFQAgFGsAFwsAF5AgFEtQFStQFXAgFDrgFLrgFYAgFBsQFRsQFjAgE/tAFMtAF8AgE9sgFOsgFSAgE8rAG8AawB1gECATu2AXS2AX4CATmzAU+zAWECATe9ATi9AUcCATW+ATi+AUsCATS/ATi/AUsCATPSARHZARoCASXaARHaAYMBAgEi4QFM4QFUAgEe4gF04gF9AgEc5wFW5wFbAgEb4AFP4AFcAgEZ6QFV6QFgAgEX4wFV4wFnAgEV5gFQ5gG8AQIBEeQBUuQBYgIBD94BwAHeAdoBAgEO6AF46AGCAQIBDOUBU+UBZQIBCtcBPdcBoQECASjUAT7UAVcCASbaAR/aAToCASM=</sads:DebugSymbol.Symbol>
   </TryCatch>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
