@@ -105,15 +105,17 @@
                 <InArgument x:TypeArguments="s:DateTime">[datetime.Now]</InArgument>
               </Assign.Value>
             </Assign>
-            <ui:AddLogFields sap2010:Annotation.AnnotationText="Default wb fields&#xA;wbName&#xA;wbParentName&#xA;wbPath&#xA;wbLevel&#xA;wbStartTime&#xA;wbState" DisplayName="Publish default wb fields" sap2010:WorkflowViewState.IdRef="AddLogFields_1">
+            <ui:AddLogFields sap2010:Annotation.AnnotationText="Default wb fields&#xA;wbName&#xA;wbParentName&#xA;wbKey&#xA;wbPath&#xA;wbLevel&#xA;wbStartTime&#xA;wbState" DisplayName="Publish default wb fields">
               <ui:AddLogFields.Fields>
                 <InArgument x:TypeArguments="x:String" x:Key="wbName">[wbName]</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="wbParentName">[if(wbPath.Count(Function(x) x="|") = 0, string.Empty, wbPath.Split("|".ToCharArray)(wbPath.Count(Function(x) x="|")-1))]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="wbKey">[Guid.NewGuid.ToString]</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="wbPath">[wbPath]</InArgument>
                 <InArgument x:TypeArguments="x:Int32" x:Key="wbLevel">[wbPath.Count(Function(x) x="|")]</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="wbState">Executing</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="wbStartTime">[wbStartTime.ToString("yyyyMMdd HH:mm:ss.fff")]</InArgument>
               </ui:AddLogFields.Fields>
+              <sap2010:WorkflowViewState.IdRef>AddLogFields_6</sap2010:WorkflowViewState.IdRef>
             </ui:AddLogFields>
             <ui:AddLogFields sap2010:Annotation.AnnotationText="Publish input fields" DisplayName="Add log fields" sap2010:WorkflowViewState.IdRef="AddLogFields_2">
               <ui:AddLogFields.Fields>
@@ -314,7 +316,7 @@
         </Catch>
       </TryCatch.Catches>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>d0lDOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcRG9jdW1lbnRzXFVpUGF0aFxVaVBFbmdpbmVMb2NhbFByb2Nlc3NcTWFpbi54YW1sdQFoAXcBAkoDvgIOAgEBSwW8AhACAQJNOE1IAgEZTjZORgIBGE82T0ACARZSCaECFAIBGqkCDbgCGAIBA1MLfBYDAYYBfQuRAhYCASSSAgugAhYCARuqAg+2AhoCAQW3Ag+3AkYCAQRUDVsWAwGhAVwNYxYDAZkBZA1rFgMBlQFsDXUfAwGLAXYNeh8DAYoBew17ugEDAYcBggENigEYAgF/iwENkgEYAgF4kwENlQEYAgFylgENiAIaAgEsiQINkAIYAgElkwINmQIfAgEgmgINngIfAgEfnwINnwLFAQIBHKsCEbMCIwIBDrQCEbQC1wECAQq1AhG1AukBAgEGWThZRgMBpAFWOVZBAwGiAWE4YYgBAwGcAV45XkEDAZoBaTppSAMBmAFmO2ZIAwGWAW9Nb8YBAwGUAXNMc3sDAZIBbkduTwMBkAFwR3BPAwGOAXJIclEDAY0BcUdxaAMBjAF7iwF7twEDAYgBgwEPiQEnAwGAAYwBD5EBJwIBeZQBD5QB8AECAXOWAa8ClgHHAgIBcZwBE4UCHgIBLYoCD48CJwIBJpUCSZUCUwIBI5YCSJYCTQIBIpcCTpcCiAECASGfAosBnwLCAQIBHa0CTa0CUwIBFa4CTK4CUQIBFLECV7ECagIBEq8CUq8CjAECARGwAlSwAmwCAQ+0Ah+0Ao8BAgELtQKSAbUC5gECAQeHAWiHAXADAYQBgwHGAYMB5gEDAYMBhgFUhgF+AwGCAYUBUIUBYAMBgQGOAVKOAVoCAX2PAWaPAW4CAXuMAbsBjAHiAQIBepQBSpQBXQIBdpQBrwGUAboBAgF1lAHIAZQB7QECAXSeAUOeAUYCAS6gARWEAh8CAS+MAlKMAloCASqNAmaNAm4CASiKArwBigLkAQIBJ6IBR6IBTgIBMKQBKqQBNQIBb6UBF4MCIgIBMacBSacBUAIBMqkBGcgBJAIBW8kBGfIBHgIBQPMBGfoBIgIBOfsBGYICIgIBM6sBHbIBNQIBZboBIcQBLAIBXMkBkQLJAaECAgFBywEd8AEoAgFD+AFF+AGdAQIBPPUBRvUBUQIBOoACQ4ACZAIBNv0BRP0BUQIBNLABXrABawIBba0BYK0BaAIBa64BdK4BfAIBaa8BZa8BdgIBZ6sB0gGrAfgBAgFmuwEjwgEsAgFgwwEjwwGrAQIBXcwBH98BKgIBUuABH+cBKgIBS+gBH+8BKgIBRMABT8ABlQECAWO9AVC9AV4CAWHDAZIBwwGoAQIBXs4BI9MBOwIBV9sBJ9sBhgICAVPhASHmATkCAUzpASHuATkCAUXQAWDQAYwBAgFZzgHaAc4B+QECAVjbAZQB2wGDAgIBVOMBZOMBbAIBUOQBeOQBgAECAU7hAc4B4QH2AQIBTesBZOsBbAIBSewBeOwBgAECAUfpAc4B6QH1AQIBRg==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0lDOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcRG9jdW1lbnRzXFVpUGF0aFxVaVBFbmdpbmVMb2NhbFByb2Nlc3NcTWFpbi54YW1sdgFoAXcBAkoDwAIOAgEBSwW+AhACAQJNOE1IAgEZTjZORgIBGE82T0ACARZSCaMCFAIBGqsCDboCGAIBA1MLfhYDAYYBfwuTAhYCASSUAguiAhYCARusAg+4AhoCAQW5Ag+5AkYCAQRUDVsWAwGiAVwNYxYDAZoBZA1rFgMBlgFsDXcfAwGLAXgNfB8DAYoBfQ19ugEDAYcBhAENjAEYAgF/jQENlAEYAgF4lQENlwEYAgFymAENigIaAgEsiwINkgIYAgEllQINmwIfAgEgnAINoAIfAgEfoQINoQLFAQIBHK0CEbUCIwIBDrYCEbYC1wECAQq3AhG3AukBAgEGWThZRgMBpQFWOVZBAwGjAWE4YYgBAwGdAV45XkEDAZsBaTppSAMBmQFmO2ZIAwGXAXBGcF0DAZUBb01vxgEDAZQBdEx0ewMBkgFuR25PAwGQAXFHcU8DAY4Bc0hzUQMBjQFyR3JoAwGMAX2LAX23AQMBiAGFAQ+LAScDAYABjgEPkwEnAgF5lgEPlgHwAQIBc5gBrwKYAccCAgFxngEThwIeAgEtjAIPkQInAgEmlwJJlwJTAgEjmAJImAJNAgEimQJOmQKIAQIBIaECiwGhAsIBAgEdrwJNrwJTAgEVsAJMsAJRAgEUswJXswJqAgESsQJSsQKMAQIBEbICVLICbAIBD7YCH7YCjwECAQu3ApIBtwLmAQIBB4kBaIkBcAMBhAGFAcYBhQHmAQMBgwGIAVSIAX4DAYIBhwFQhwFgAwGBAZABUpABWgIBfZEBZpEBbgIBe44BuwGOAeIBAgF6lgFKlgFdAgF2lgGvAZYBugECAXWWAcgBlgHtAQIBdKABQ6ABRgIBLqIBFYYCHwIBL44CUo4CWgIBKo8CZo8CbgIBKIwCvAGMAuQBAgEnpAFHpAFOAgEwpgEqpgE1AgFvpwEXhQIiAgExqQFJqQFQAgEyqwEZygEkAgFbywEZ9AEeAgFA9QEZ/AEiAgE5/QEZhAIiAgEzrQEdtAE1AgFlvAEhxgEsAgFcywGRAssBoQICAUHNAR3yASgCAUP6AUX6AZ0BAgE89wFG9wFRAgE6ggJDggJkAgE2/wFE/wFRAgE0sgFesgFrAgFtrwFgrwFoAgFrsAF0sAF8AgFpsQFlsQF2AgFnrQHSAa0B+AECAWa9ASPEASwCAWDFASPFAasBAgFdzgEf4QEqAgFS4gEf6QEqAgFL6gEf8QEqAgFEwgFPwgGVAQIBY78BUL8BXgIBYcUBkgHFAagBAgFe0AEj1QE7AgFX3QEn3QGGAgIBU+MBIegBOQIBTOsBIfABOQIBRdIBYNIBjAECAVnQAdoB0AH5AQIBWN0BlAHdAYMCAgFU5QFk5QFsAgFQ5gF45gGAAQIBTuMBzgHjAfYBAgFN7QFk7QFsAgFJ7gF47gGAAQIBR+sBzgHrAfUBAgFG</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -339,7 +341,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="AddLogFields_1" sap:VirtualizedContainerService.HintSize="314,139">
+      <sap2010:ViewStateData Id="AddLogFields_6" sap:VirtualizedContainerService.HintSize="314,154">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -354,10 +356,10 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="LogMessage_12" sap:VirtualizedContainerService.HintSize="314,91" />
-      <sap2010:ViewStateData Id="Sequence_43" sap:VirtualizedContainerService.HintSize="526,198">
+      <sap2010:ViewStateData Id="Sequence_43" sap:VirtualizedContainerService.HintSize="526,981">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
@@ -548,7 +550,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="548,3209">
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="548,3992">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -589,7 +591,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="566,3673">
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="566,4456">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -598,7 +600,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="588,3839">
+      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="588,4622">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -606,7 +608,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="basicFramework_1" sap:VirtualizedContainerService.HintSize="628,4679" />
+      <sap2010:ViewStateData Id="basicFramework_1" sap:VirtualizedContainerService.HintSize="628,4702" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

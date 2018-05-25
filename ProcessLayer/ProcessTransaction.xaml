@@ -108,17 +108,19 @@
               <InArgument x:TypeArguments="s:DateTime">[datetime.Now]</InArgument>
             </Assign.Value>
           </Assign>
-          <ui:AddLogFields sap2010:Annotation.AnnotationText="Default wb fields&#xA;wbName&#xA;wbParentName&#xA;wbPath&#xA;wbLevel&#xA;wbStartTime&#xA;wbState" DisplayName="Publish default wb fields" sap2010:WorkflowViewState.IdRef="AddLogFields_27">
+          <ui:AddLogFields sap2010:Annotation.AnnotationText="Default wb fields&#xA;wbName&#xA;wbParentName&#xA;wbKey&#xA;wbPath&#xA;wbLevel&#xA;wbStartTime&#xA;wbState" DisplayName="Publish default wb fields">
             <ui:AddLogFields.Fields>
               <InArgument x:TypeArguments="x:String" x:Key="wbName">[wbName]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="wbParentName">[if(wbPath.Count(Function(x) x="|") = 0, string.Empty, wbPath.Split("|".ToCharArray)(wbPath.Count(Function(x) x="|")-1))]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="wbKey">[Guid.NewGuid.ToString]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="wbPath">[wbPath]</InArgument>
               <InArgument x:TypeArguments="x:Int32" x:Key="wbLevel">[wbPath.Count(Function(x) x="|")]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="wbState">Executing</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="wbStartTime">[wbStartTime.ToString("yyyyMMdd HH:mm:ss.fff")]</InArgument>
             </ui:AddLogFields.Fields>
+            <sap2010:WorkflowViewState.IdRef>AddLogFields_32</sap2010:WorkflowViewState.IdRef>
           </ui:AddLogFields>
-          <ui:AddLogFields sap2010:Annotation.AnnotationText="Publish input fields&#xD;&#xA;wbRetriesLeft" DisplayName="Add log fields" sap2010:WorkflowViewState.IdRef="AddLogFields_28">
+          <ui:AddLogFields sap2010:Annotation.AnnotationText="Publish input fields&#xA;wbRetriesLeft" DisplayName="Add log fields" sap2010:WorkflowViewState.IdRef="AddLogFields_28">
             <ui:AddLogFields.Fields>
               <InArgument x:TypeArguments="x:Int32" x:Key="wbRetriesLeft">[cint(in_Config.Item("MaxRetryNumber")) - in_RetryNumber]</InArgument>
             </ui:AddLogFields.Fields>
@@ -206,32 +208,32 @@
         </ActivityAction>
       </Catch>
     </TryCatch.Catches>
-    <sads:DebugSymbol.Symbol>d2RDOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcRG9jdW1lbnRzXFVpUGF0aFxVaVBFbmdpbmVMb2NhbFByb2Nlc3NcUHJvY2Vzc0xheWVyXFByb2Nlc3NUcmFuc2FjdGlvbi54YW1sPE4D0gEOAgEBUDZQRgIBGVE0UVMCARhSNFJcAgEVVQe2ARICARq+AQvNARYCAQJWCX8UAgExgAEJpgEVAgEkpwEJtQEUAgEbvwENywEYAgEEzAENzAFFAgEDVwteFAIBT18LZhQCAUdnC24UAgFDbwt4HQIBOXkLfR0CATV+C363AQIBMoIBOoIBTwIBJYUBPYUB4QECATCMAUGMAaYBAgEvlAEXmgEvAgEqjwEXjwHPAQIBKIgBE4gB/wECASaoAQuuAR0CASCvAQuzAR0CAR+0AQu0AcIBAgEcwAEPyAEhAgENyQEPyQHWAQIBCcoBD8oB5gECAQVcNlxTAgFSWTdZPwIBUGQ2ZIYBAgFKYTdhPwIBSGw4bEYCAUZpOWlGAgFEcktyxAECAUJ2SnZ5AgFAcUVxTQIBPnNFc00CATx1RnVPAgE7dEV0ZgIBOntLe4QBAgE2fogBfrQBAgEzlwFXlwGIAQIBLpgBWpgBjwECAS2WAVSWAYEBAgEslAHWAZQB+wECASuPAVCPAaIBAgEpiAFLiAHSAQIBJ6oBR6oBUQIBI6sBRqsBSwIBIqwBTKwBhgECASG0AYgBtAG/AQIBHcIBS8IBUQIBFMMBSsMBTwIBE8YBVcYBaAIBEcQBUMQBigECARDFAVLFAWoCAQ7JAR3JAY0BAgEKygGPAcoB4wECAQY=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2RDOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcRG9jdW1lbnRzXFVpUGF0aFxVaVBFbmdpbmVMb2NhbFByb2Nlc3NcUHJvY2Vzc0xheWVyXFByb2Nlc3NUcmFuc2FjdGlvbi54YW1sPU4D1AEOAgEBUDZQRgIBGVE0UVMCARhSNFJcAgEVVQe4ARICARrAAQvPARYCAQJWCYEBFAIBMYIBCagBFQIBJKkBCbcBFAIBG8EBDc0BGAIBBM4BDc4BRQIBA1cLXhQCAVBfC2YUAgFIZwtuFAIBRG8Leh0CATl7C38dAgE1gAELgAG3AQIBMoQBOoQBTwIBJYcBPYcB4QECATCOAUGOAaYBAgEvlgEXnAEvAgEqkQEXkQHPAQIBKIoBE4oB/wECASaqAQuwAR0CASCxAQu1AR0CAR+2AQu2AcIBAgEcwgEPygEhAgENywEPywHWAQIBCcwBD8wB5gECAQVcNlxTAgFTWTdZPwIBUWQ2ZIYBAgFLYTdhPwIBSWw4bEYCAUdpOWlGAgFFc0RzWwIBQ3JLcsQBAgFCd0p3eQIBQHFFcU0CAT50RXRNAgE8dkZ2TwIBO3VFdWYCATp9S32EAQIBNoABiAGAAbQBAgEzmQFXmQGIAQIBLpoBWpoBjwECAS2YAVSYAYEBAgEslgHWAZYB+wECASuRAVCRAaIBAgEpigFLigHSAQIBJ6wBR6wBUQIBI60BRq0BSwIBIq4BTK4BhgECASG2AYgBtgG/AQIBHcQBS8QBUQIBFMUBSsUBTwIBE8gBVcgBaAIBEcYBUMYBigECARDHAVLHAWoCAQ7LAR3LAY0BAgEKzAGPAcwB4wECAQY=</sads:DebugSymbol.Symbol>
   </TryCatch>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="Assign_8" sap:VirtualizedContainerService.HintSize="314,102">
+      <sap2010:ViewStateData Id="Assign_8" sap:VirtualizedContainerService.HintSize="314,60">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Assign_9" sap:VirtualizedContainerService.HintSize="314,102">
+      <sap2010:ViewStateData Id="Assign_9" sap:VirtualizedContainerService.HintSize="314,60">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Assign_10" sap:VirtualizedContainerService.HintSize="314,87">
+      <sap2010:ViewStateData Id="Assign_10" sap:VirtualizedContainerService.HintSize="314,60">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="AddLogFields_27" sap:VirtualizedContainerService.HintSize="314,139">
+      <sap2010:ViewStateData Id="AddLogFields_32" sap:VirtualizedContainerService.HintSize="314,154">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -246,7 +248,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="LogMessage_1" sap:VirtualizedContainerService.HintSize="314,91" />
-      <sap2010:ViewStateData Id="Sequence_68" sap:VirtualizedContainerService.HintSize="784,981">
+      <sap2010:ViewStateData Id="Sequence_68" sap:VirtualizedContainerService.HintSize="784,885">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -359,7 +361,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_47" sap:VirtualizedContainerService.HintSize="806,2001">
+      <sap2010:ViewStateData Id="Sequence_47" sap:VirtualizedContainerService.HintSize="806,1905">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -401,14 +403,14 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_4" sap:VirtualizedContainerService.HintSize="824,2485">
+      <sap2010:ViewStateData Id="TryCatch_4" sap:VirtualizedContainerService.HintSize="824,2189">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ProcessTransaction_1" sap:VirtualizedContainerService.HintSize="864,2765" />
+      <sap2010:ViewStateData Id="ProcessTransaction_1" sap:VirtualizedContainerService.HintSize="864,2269" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
