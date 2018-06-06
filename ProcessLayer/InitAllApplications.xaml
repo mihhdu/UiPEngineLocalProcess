@@ -11,7 +11,6 @@
  xmlns:ui="http://schemas.uipath.com/workflow/activities"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_wbParentPath" Type="InArgument(x:String)" />
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
   </x:Members>
   <mva:VisualBasic.Settings>
@@ -92,7 +91,7 @@
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
     </Parallel>
-    <sads:DebugSymbol.Symbol>d2VDOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcRG9jdW1lbnRzXFVpUGF0aFxVaVBFbmdpbmVMb2NhbFByb2Nlc3NcUHJvY2Vzc0xheWVyXEluaXRBbGxBcHBsaWNhdGlvbnMueGFtbA5GA2AOAgEBSwVRHQIBDVIFXhACAQJPTU9XAgETTkZOcwIBEU1GTVACAQ9LvgFL4AECAQ5TB1cfAgEJWAddHwIBA1VCVWkCAQtTvQFT2QECAQpaRlpQAgEHWLsBWNUBAgEGW01bVwIBBA==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d29DOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcRG9jdW1lbnRzXFVpUGF0aFxUZW1wbGF0ZXNcVWlQRW5naW5lTG9jYWxQcm9jZXNzXFByb2Nlc3NMYXllclxJbml0QWxsQXBwbGljYXRpb25zLnhhbWwORQNfDgIBAUoFUB0CAQ1RBV0QAgECTk1OVwIBE01GTXMCARFMRkxQAgEPSr4BSuABAgEOUgdWHwIBCVcHXB8CAQNUQlRpAgELUr0BUtkBAgEKWUZZUAIBB1e7AVfVAQIBBlpNWlcCAQQ=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
