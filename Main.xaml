@@ -1,4 +1,4 @@
-﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="basicFramework" this:basicFramework.in_wbParentPath="[string.Empty]"
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="basicFramework"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
@@ -9,11 +9,11 @@
  xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
  xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
  xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
- xmlns:this="clr-namespace:"
  xmlns:ui="http://schemas.uipath.com/workflow/activities"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_wbParentPath" Type="InArgument(x:String)" />
+    <x:Property Name="ApplicationPath" Type="InArgument(x:String)" />
+    <x:Property Name="ApplicationCredentials" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -69,6 +69,8 @@
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>System.Collections.Immutable</AssemblyReference>
       <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>UiPath.IntelligentOCR</AssemblyReference>
+      <AssemblyReference>UiPath.Python</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Simple framework that provides a basic engine that will solve and log simple processes using local Data, such as tables, collections of strings etc." DisplayName="UiPath Engine for running a Recoverable Process with Local Data" sap2010:WorkflowViewState.IdRef="Sequence_22">
@@ -94,7 +96,7 @@
                 <OutArgument x:TypeArguments="x:String">[wbPath]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="x:String">[if (string.IsNullOrEmpty(in_wbParentPath), wbName, in_wbParentPath+"|"+wbName)]</InArgument>
+                <InArgument x:TypeArguments="x:String">[wbName]</InArgument>
               </Assign.Value>
             </Assign>
             <Assign sap2010:Annotation.AnnotationText="Assign template start time. " DisplayName="Assign start time" sap2010:WorkflowViewState.IdRef="Assign_26">
@@ -136,6 +138,38 @@
                   <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="out_Config">[Config]</OutArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
+              <Sequence sap2010:Annotation.AnnotationText="Save job arguments with values to Config, using the argument's name as keyname. " DisplayName="Save job arguments Config" sap2010:WorkflowViewState.IdRef="Sequence_48">
+                <If Condition="[Not string.IsNullOrEmpty(ApplicationPath)]" DisplayName="ApplicationPath" sap2010:WorkflowViewState.IdRef="If_7">
+                  <If.Then>
+                    <Assign DisplayName="Add ApplicationPath" sap2010:WorkflowViewState.IdRef="Assign_29">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Object">[Config("ApplicationPath")]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Object">[ApplicationPath]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </If.Then>
+                  <If.Else>
+                    <ui:Comment sap2010:WorkflowViewState.IdRef="Comment_1" Text="// If the argument has no value, do not overwrite config. This provides backward compatibility with &lt; 2018.3 and allows default values to come from the Config.xlsx" />
+                  </If.Else>
+                </If>
+                <If Condition="[Not string.IsNullOrEmpty(ApplicationCredentials)]" DisplayName="ApplicationCredentials" sap2010:WorkflowViewState.IdRef="If_8">
+                  <If.Then>
+                    <Assign DisplayName="Add ApplicationCredentials" sap2010:WorkflowViewState.IdRef="Assign_30">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Object">[Config("ApplicationCredentials")]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Object">[ApplicationCredentials]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </If.Then>
+                  <If.Else>
+                    <ui:Comment sap2010:WorkflowViewState.IdRef="Comment_2" Text="// If the argument has no value, do not overwrite config. This provides backward compatibility with &lt; 2018.3 and allows default values to come from the Config.xlsx" />
+                  </If.Else>
+                </If>
+              </Sequence>
             </Sequence>
             <Sequence sap2010:Annotation.AnnotationText="Open applications you want to use" DisplayName="2. Init Apps" sap2010:WorkflowViewState.IdRef="Sequence_33">
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="ProcessLayer\InitAllApplications.xaml">
@@ -311,7 +345,7 @@
         </Catch>
       </TryCatch.Catches>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>d1NDOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcRG9jdW1lbnRzXFVpUGF0aFxUZW1wbGF0ZXNcVWlQRW5naW5lTG9jYWxQcm9jZXNzXE1haW4ueGFtbHIBaAF3AQJKA7sCDgIBAUsFuQIQAgECTThNSAIBGU42TkYCARhPNk9AAgEWUgmeAhQCARqmAg21AhgCAQNTC30WAgF+fguOAhYCASSPAgudAhYCARunAg+zAhoCAQW0Ag+0AkYCAQRUDVsWAwGaAVwNYxYDAZIBZA1rFgMBjgFsDXYfAwGDAXcNex8DAYIBfA18ugECAX+DAQ2LARgCAXeMAQ2SARgCAXKTAQ2VARgCAWyWAQ2GAhoCASqHAg2NAhgCASWQAg2WAh8CASCXAg2bAh8CAR+cAg2cAsUBAgEcqAIRsAIjAgEOsQIRsQLXAQIBCrICEbIC6QECAQZZOFlGAwGdAVY5VkEDAZsBYThhiAEDAZUBXjleQQMBkwFpOmlIAwGRAWY7ZkgDAY8BcEZwXQMBjQFvTW/GAQMBjAF0THR7AwGKAW5Hbk8DAYgBcUdxTwMBhgFzSHNRAwGFAXJHcmgDAYQBfIsBfLcBAwGAAYQBD4oBJwIBeI0BD5EBJwIBc5QBD5QB8AECAW2WAa8ClgHHAgIBa5wBE4MCHgIBK4gCD4wCJwIBJpICSZICUwIBI5MCSJMCTQIBIpQCTpQCiAECASGcAosBnALCAQIBHaoCTaoCUwIBFasCTKsCUQIBFK4CV64CagIBEqwCUqwCjAECARGtAlStAmwCAQ+xAh+xAo8BAgELsgKSAbIC5gECAQeIAWiIAXACAXyEAcYBhAHmAQIBe4cBVIcBfgIBeoYBUIYBYAIBeY8BZo8BbgIBdY0BuwGNAeIBAgF0lAFKlAFdAgFwlAGvAZQBugECAW+UAcgBlAHtAQIBbp4BQ54BRgIBLKABFYICHwIBLYoCZooCbgIBKIgCvAGIAuQBAgEnogFHogFOAgEupAEqpAE1AgFppQEXgQIiAgEvpwFJpwFQAgEwqQEZyAEkAgFVyQEZ8AEeAgE+8QEZ+AEiAgE3+QEZgAIiAgExqwEdsgE1AgFfugEhxAEsAgFWyQGRAskBoQICAT/LAR3uASgCAUH2AUX2AZ0BAgE68wFG8wFRAgE4/gFD/gFkAgE0+wFE+wFRAgEysAFesAFrAgFnrQFgrQFoAgFlrgF0rgF8AgFjrwFlrwF2AgFhqwHSAasB+AECAWC7ASPCASwCAVrDASPDAasBAgFXzAEf3wEqAgFM4AEf5gEqAgFH5wEf7QEqAgFCwAFPwAGVAQIBXb0BUL0BXgIBW8MBkgHDAagBAgFYzgEj0wE7AgFR2wEn2wGGAgIBTeEBIeUBOQIBSOgBIewBOQIBQ9ABYNABjAECAVPOAdoBzgH5AQIBUtsBlAHbAYMCAgFO4wF44wGAAQIBSuEBzgHhAfYBAgFJ6gF46gGAAQIBRegBzgHoAfUBAgFE</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1NDOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcRG9jdW1lbnRzXFVpUGF0aFxUZW1wbGF0ZXNcVWlQRW5naW5lTG9jYWxQcm9jZXNzXE1haW4ueGFtbH5MA90CDgIBAU0F2wIQAgECTzhPSAIBGVA2UEYCARhRNlFAAgEWVAnAAhQCARrIAg3XAhgCAQNVC38WAwGRAYABC7ACFgIBJLECC78CFgIBG8kCD9UCGgIBBdYCD9YCRgIBBFYNXRYDAaoBXg1lFgMBpQFmDW0WAwGhAW4NeB8DAZYBeQ19HwMBlQF+DX66AQMBkgGFAQ2tARgCAXeuAQ20ARgCAXK1AQ23ARgCAWy4AQ2oAhoCASqpAg2vAhgCASWyAg24Ah8CASC5Ag29Ah8CAR++Ag2+AsUBAgEcygIR0gIjAgEO0wIR0wLXAQIBCtQCEdQC6QECAQZbOFtGAwGtAVg5WEEDAasBYzhjQAMBqAFgOWBBAwGmAWs6a0gDAaQBaDtoSAMBogFyRnJdAwGgAXFNccYBAwGfAXZMdnsDAZ0BcEdwTwMBmwFzR3NPAwGZAXVIdVEDAZgBdEd0aAMBlwF+iwF+twEDAZMBhgEPjAEnAwGLAY0BD6wBGgIBeK8BD7MBJwIBc7YBD7YB8AECAW24Aa8CuAHHAgIBa74BE6UCHgIBK6oCD64CJwIBJrQCSbQCUwIBI7UCSLUCTQIBIrYCTrYCiAECASG+AosBvgLCAQIBHcwCTcwCUwIBFc0CTM0CUQIBFNACV9ACagIBEs4CUs4CjAECARHPAlTPAmwCAQ/TAh/TAo8BAgEL1AKSAdQC5gECAQeKAWiKAXADAY8BhgHGAYYB5gEDAY4BiQFUiQF+AwGNAYgBUIgBYAMBjAGOARGcARYDAYIBnQERqwEWAgF5sQFmsQFuAgF1rwG7Aa8B4gECAXS2AUq2AV0CAXC2Aa8BtgG6AQIBb7YByAG2Ae0BAgFuwAFDwAFGAgEswgEVpAIfAgEtrAJmrAJuAgEoqgK8AaoC5AECASeOAR+OAUwDAYMBkAEVlwEeAwGGAZoBFZoB/QEDAYUBnQEfnQFTAgF6nwEVpgEeAgF9qQEVqQH9AQIBfMQBR8QBTgIBLsYBKsYBNQIBaccBF6MCIgIBL5UBQJUBUQMBiQGSAUGSAVwDAYcBpAFApAFYAwGAAaEBQaEBYwIBfskBSckBUAIBMMsBGeoBJAIBVesBGZICHgIBPpMCGZoCIgIBN5sCGaICIgIBMc0BHdQBNQIBX9wBIeYBLAIBVusBkQLrAaECAgE/7QEdkAIoAgFBmAJFmAKdAQIBOpUCRpUCUQIBOKACQ6ACZAIBNJ0CRJ0CUQIBMtIBXtIBawIBZ88BYM8BaAIBZdABdNABfAIBY9EBZdEBdgIBYc0B0gHNAfgBAgFg3QEj5AEsAgFa5QEj5QGrAQIBV+4BH4ECKgIBTIICH4gCKgIBR4kCH48CKgIBQuIBT+IBlQECAV3fAVDfAV4CAVvlAZIB5QGoAQIBWPABI/UBOwIBUf0BJ/0BhgICAU2DAiGHAjkCAUiKAiGOAjkCAUPyAWDyAYwBAgFT8AHaAfAB+QECAVL9AZQB/QGDAgIBToUCeIUCgAECAUqDAs4BgwL2AQIBSYwCeIwCgAECAUWKAs4BigL1AQIBRA==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -361,6 +395,35 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="InvokeWorkflowFile_8" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Assign_29" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Comment_1" sap:VirtualizedContainerService.HintSize="314,112" />
+      <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="581,260">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_30" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Comment_2" sap:VirtualizedContainerService.HintSize="314,112" />
+      <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="581,260">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_48" sap:VirtualizedContainerService.HintSize="314,123">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="Sequence_32" sap:VirtualizedContainerService.HintSize="504,108">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">

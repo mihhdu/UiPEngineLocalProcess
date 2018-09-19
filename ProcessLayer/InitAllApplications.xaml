@@ -64,6 +64,8 @@
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>UiPath.IntelligentOCR</AssemblyReference>
+      <AssemblyReference>UiPath.Python</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="##Business Process Layer##&#xA;Description: Open and initialize application as needed.&#xA;&#xA;Pre Condition: N/A&#xA;Post Condtion: Applications opened" DisplayName="InitAllApplications" sap2010:WorkflowViewState.IdRef="Sequence_9">
@@ -74,39 +76,16 @@
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAppCredentials workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Framework\GetAppCredentials.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <OutArgument x:TypeArguments="x:String" x:Key="out_Username">[username]</OutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Credential">[in_Config.Item("UiDemoCredential").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Credential">[in_Config.Item("ApplicationCredentials").ToString]</InArgument>
         <OutArgument x:TypeArguments="ss:SecureString" x:Key="out_Password">[password]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <Parallel sap2010:WorkflowViewState.IdRef="Parallel_1">
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UiDemo_OpenApp workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="UiDemo\UiDemo_OpenApp.xaml">
-        <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="x:String" x:Key="in_Path">[in_Config.Item("UiDemoPath").ToString]</InArgument>
-        </ui:InvokeWorkflowFile.Arguments>
-      </ui:InvokeWorkflowFile>
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UiDemo_Login workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="UiDemo\UiDemo_Login.xaml">
-        <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="x:String" x:Key="in_Username">[username]</InArgument>
-          <InArgument x:TypeArguments="ss:SecureString" x:Key="in_Password">[password]</InArgument>
-        </ui:InvokeWorkflowFile.Arguments>
-      </ui:InvokeWorkflowFile>
-    </Parallel>
-    <sads:DebugSymbol.Symbol>d29DOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcRG9jdW1lbnRzXFVpUGF0aFxUZW1wbGF0ZXNcVWlQRW5naW5lTG9jYWxQcm9jZXNzXFByb2Nlc3NMYXllclxJbml0QWxsQXBwbGljYXRpb25zLnhhbWwORQNfDgIBAUoFUB0CAQ1RBV0QAgECTk1OVwIBE01GTXMCARFMRkxQAgEPSr4BSuABAgEOUgdWHwIBCVcHXB8CAQNUQlRpAgELUr0BUtkBAgEKWUZZUAIBB1e7AVfVAQIBBlpNWlcCAQQ=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d29DOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcRG9jdW1lbnRzXFVpUGF0aFxUZW1wbGF0ZXNcVWlQRW5naW5lTG9jYWxQcm9jZXNzXFByb2Nlc3NMYXllclxJbml0QWxsQXBwbGljYXRpb25zLnhhbWwGRwNUDgIBAUwFUh0CAQJQTVBXAgEIT0ZPeQIBBk5GTlACAQRMvgFM4AECAQM=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="InvokeWorkflowFile_4" sap:VirtualizedContainerService.HintSize="782,87" />
-      <sap2010:ViewStateData Id="InvokeWorkflowFile_1" sap:VirtualizedContainerService.HintSize="314,87" />
-      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="314,87" />
-      <sap2010:ViewStateData Id="Parallel_1" sap:VirtualizedContainerService.HintSize="782,133">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="804,471">
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_4" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="336,298">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -114,7 +93,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="InitAllApplications_1" sap:VirtualizedContainerService.HintSize="844,551" />
+      <sap2010:ViewStateData Id="InitAllApplications_1" sap:VirtualizedContainerService.HintSize="376,378" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
