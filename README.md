@@ -27,9 +27,9 @@ This workblock contains code that will do the following:
 ### For New Project ###
 To begin implementing take the following steps:
 
-1. Check out the *Data\Config.xlsx* file and add/customize any required fields and values. 
+1. Check out the *Data\Config.xlsx* file and add/customize any required fields and values.
 
-2. Decide what the process is going to achieve. Think about what kind of data is moving around in the process. Think about wheather or not it is a cyclical process or executes just once. 
+2. Decide what the process is going to achieve. Think about what kind of data is moving around in the process. Think about whether or not it is a cyclical process or executes just once.
 
 3. Go in Main.xaml and change the following data types to suit your project needs:
 TransactionData - by default a Datatable represents the collection of transaction data to be used in this process run
@@ -38,7 +38,7 @@ Do not worry about errors so far.
 
 4. Open *ProcessLayer\ProcessTransaction.xaml* and change io_TransactionItem's datatype to match the one you set up in the Main.xaml file.
 
-5. Open Main.xaml and update the inferface to **PROCESS TRANSACTION** states by clicking the import button. The errors from point 1. should now dissapear.
+5. Open Main.xaml and update the interface to **PROCESS TRANSACTION** states by clicking the import button. The errors from point 1. should now disappear.
 
 6. Begin writing business code in the workflows located in the *ProcessLayer* folder
 
@@ -46,7 +46,6 @@ Do not worry about errors so far.
 
 *ProcessLayer\CloseAllApplications.xaml* - write business code to close all applications you have opened at previous step.
 
-*ProcessLayer\ProcessTransaction.xaml* - write business code to use applications that are open and data from io_TransactionItem and complete the transaction. At the end of the transaction, take the applications to the page they were at when you began the transaction. 
+*ProcessLayer\ProcessTransaction.xaml* - write business code to use applications that are open and data from io_TransactionItem and complete the transaction. At the end of the transaction, take the applications to the page they were at when you began the transaction.
 
-7. Execute and have fun! 
-
+7. Execute and have fun!
