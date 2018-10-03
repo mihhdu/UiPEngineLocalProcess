@@ -3,13 +3,18 @@
   "description": "This is a framework for a simple, recoverable process, using local data",
   "main": "Main.xaml",
   "dependencies": {
+    "UiPath.Core.Activities": "18.2.6745.15248",
+    "UiPath.Credentials.Activities": "1.1.6479.13204",
+    "UiPath.Excel.Activities": "2.3.6682.26635",
+    "UiPath.Mail.Activities": "1.1.6562.21018",
+    "UiPath.WebAPI.Activities": "1.1.6479.13209"
   },
   "excludedData": [
     "Private:*",
     "*password*"
   ],
-  "toolVersion": "18.1.1.13",
-  "projectVersion": "1.0.6647.35179",
+  "toolVersion": "18.2",
+  "projectVersion": "1.0.6850.14559",
   "packOptions": {},
   "runtimeOptions": {}
 }
