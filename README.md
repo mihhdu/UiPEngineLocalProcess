@@ -25,11 +25,11 @@ This workblock contains code that will do the following:
 5. Call ProcessLayer\CloseAllApplications.xaml
 
 ### Dependencies ###
-UiPath.Core.Activities
-UiPath.Credentials.Activities
-UiPath.Excel.Activities
-UiPath.Mail.Activities
-UiPath.WebAPI.Activities
+* UiPath.Core.Activities
+* UiPath.Credentials.Activities
+* UiPath.Excel.Activities
+* UiPath.Mail.Activities
+* UiPath.WebAPI.Activities
 
 ### For New Project ###
 To begin implementing take the following steps:
